@@ -1,0 +1,6 @@
+streamlit
+langchain-community
+sentence-transformers
+faiss-cpu
+groq
+torch
