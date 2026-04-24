@@ -5,8 +5,6 @@
 
 AI-powered legal research assistant built using Retrieval-Augmented Generation (RAG), semantic search, and LLMs to answer questions grounded in Indian legal documents.
 
-![VidhaanBot UI](./screenshot.png)
-
 ---
 
 ## Features
@@ -46,7 +44,6 @@ Responses are generated from indexed source documents and are **not a substitute
 ## Future Improvements
 
 - Hybrid search (BM25 + FAISS)
-- Query rewriting for follow-ups
 - Reranking
 - Case law expansion
 - Document upload for user queries
