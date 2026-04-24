@@ -1,8 +1,4 @@
-"""
-app.py — Legal Chatbot (Groq hosted version)
-Features: streaming, Hindi/English toggle,
-suggested follow-up questions (separate buttons), feedback logging
-"""
+
 
 import streamlit as st
 import time
@@ -116,7 +112,7 @@ def fetch_suggestions(question, answer, client, language):
     try:
         prompt = f"Question: {question}\n\nAnswer: {answer[:400]}"
         resp = client.chat.completions.create(
-            model="llama-3.1-8b-instant",   # fast small model for suggestions
+            model="llama-3.1-8b-instant",   
             messages=[
                 {"role": "system", "content": SUGGESTION_PROMPTS[language]},
                 {"role": "user", "content": prompt}
@@ -486,12 +482,12 @@ if question:
 
     with st.chat_message("assistant"):
         try:
-            # 1. Stream the answer cleanly — no suggestion text mixed in
+            
             answer = st.write_stream(
                 stream_answer(question, vectorstore, client,
                               st.session_state.messages, language)
             )
-            # Save answer + sources together so they survive rerun
+            
             docs = vectorstore.similarity_search(question, k=TOP_K)
             sources = [
                 {
@@ -510,7 +506,7 @@ if question:
         except Exception as e:
             st.error(f"Error: {e}")
 
-    # 3. Fetch suggestions AFTER streaming is done (separate call, no streaming)
+    
     with st.spinner("Getting suggestions..."):
         suggestions = fetch_suggestions(question, answer, client, language)
         st.session_state.suggestions = suggestions
