@@ -24,7 +24,7 @@ st.set_page_config(
 
 INDEX_DIR   = "faiss_index"
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-LLM_MODEL   = "llama-3.1-8b-instant"
+LLM_MODEL   = "llama3.2"
 TOP_K       = 4
 
 SYSTEM_PROMPT = """
