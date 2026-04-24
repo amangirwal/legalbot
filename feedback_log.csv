@@ -1,0 +1,20 @@
+timestamp,language,question,answer,rating
+2026-04-25T00:49:00.254293,English,Tell me about Article 21,"Article 21 is mentioned in the context, but the provided text does not explicitly explain what Article 21 is about. However, according to general knowledge of the Indian Constitution, Article 21 states that ""No person shall be deprived of his life or personal liberty except according to procedure established by law"" (as per the Constitution of India). Unfortunately, this information is not found in the provided context.
+
+The context only mentions that relief under Articles 21 and 22 may be sough",positive
+2026-04-25T00:49:59.043387,English,Tell me about Right to Education,"The Right to Education is guaranteed under Article 21A of the Constitution, which states that ""The State shall provide free and compulsory education to all children of the age of six to fourteen years in such manner as the State may, by law, determine"" (Article 21A). This means that every child between the ages of 6 and 14 has the right to receive free and compulsory education, and the State is responsible for providing it.
+
+Additionally, Article 30 provides that minorities have the right to est",positive
+2026-04-25T00:52:26.294552,Hindi,what is articel 21A,"अनुच्छेद 21ए भारतीय संविधान का एक महत्वपूर्ण अनुच्छेद है, जो शिक्षा के अधिकार को सुनिश्चित करता है। यह अनुच्छेद कहता है कि राज्य छह से चौदह वर्ष की आयु के सभी बच्चों को निशुल्क और अनिवार्य शिक्षा प्रदान करेगा।
+
+यह अनुच्छेद 86वें संविधान संशोधन अधिनियम, 2002 द्वारा जोड़ा गया था, जो 1 अप्रैल 2010 से लागू हुआ था। इस अनुच्छेद के अनुसार, राज्य को यह सुनिश्चित करना होगा कि सभी बच्चे निशुल्क और अनिवार्य शिक्षा प्राप्त करें, और इसके लिए आवश्यक कदम उठाए जाएं।
+
+अनुच्छेद 21ए के मुख्य बिंदु हैं:
+
+* छह से चौ",positive
+2026-04-25T00:54:11.944629,English,What was the special status of Jammu and Kashmir under Article 370,"Under Article 370 of the Constitution of India, the special status of Jammu and Kashmir meant that the State had a certain degree of autonomy. According to Article 370(1)(b), the power of Parliament to make laws for the State of Jammu and Kashmir was limited to matters in the Union List and the Concurrent List (Part XXI, Article 370, Clause 1(b)(i)). Additionally, the provisions of Article 238 did not apply to the State of Jammu and Kashmir (Part XXI, Article 370, Clause 1(a)).
+
+This special sta",positive
+2026-04-25T00:54:14.611745,English,Tell me about Article 370,"Article 370 of the Constitution of India has been modified as per the declaration under Article 370(3) of the Constitution. As of 6th August, 2019, all clauses of Article 370 shall cease to be operative except for the provision that states all provisions of the Constitution, as amended from time to time, without any modifications or exceptions, shall apply to the State of Jammu and Kashmir (Article 370). This means that the special status granted to Jammu and Kashmir under Article 370 has been e",positive
+2026-04-25T01:10:42.185124,English,Tell me about Emergency Provisions,"Emergency Provisions are outlined in Part XVIII of the Constitution of India. According to Article 359, during emergencies, the enforcement of the rights conferred by Part III can be suspended. The President can proclaim an emergency under certain circumstances, and this proclamation can extend to the whole or any part of the territory of India (Article 211). The Parliament has the power to make laws in relation to the Proclamation of Emergency, and the executive power of the Union can give dire",positive
+2026-04-25T01:41:59.269666,English,Tell me about Women Safety,"Women safety is ensured through the provisions of the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013. According to Section 19, every employer is required to provide a safe working environment at the workplace, which includes safety from persons coming into contact at the workplace. Additionally, employers must display the penal consequences of sexual harassment and the order constituting the Internal Committee under sub-section (1) of section 4 at a con",positive
