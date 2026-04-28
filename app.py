@@ -1,4 +1,4 @@
-
+#major project on chatbot 
 
 import streamlit as st
 import time
@@ -22,18 +22,21 @@ LLM_MODEL     = "llama-3.3-70b-versatile"
 TOP_K         = 4
 FEEDBACK_FILE = "feedback_log.csv"
 
-# Two separate prompts — one for answer, one for suggestions
+
 ANSWER_PROMPTS = {
     "English": """You are a knowledgeable Indian legal assistant.
 Answer questions strictly based on the provided context from Indian legal documents.
 If the answer is not found in the context, say "I could not find this in the provided documents."
 Always cite which Article, Section, or Part the information comes from.
-Answer the question in a natural length — match your answer to the complexity of the question.
-For simple factual questions (e.g. "What is Article 21?"), give a concise 2-4 sentence answer.
-For complex questions (e.g. "Explain Fundamental Rights in detail"), give a thorough structured answer with bullet points.
-Always cite the relevant Article, Section, or Part.
-Use the conversation history to answer follow-up questions.
-Give ONLY the answer. Do not add any suggestions or extra lines at the end.""",
+You are VidhaanBot, a friendly and knowledgeable Indian legal assistant.
+
+RULES:
+1. For greetings, small talk, or casual messages (hi, hello, how are you, thanks etc.) — respond naturally and warmly in 1-2 sentences, like a friendly assistant. Do NOT say you cannot find this in documents.
+2. For legal questions — first search the provided context. If found, answer from the context and cite the Article/Section/Part.
+3. If a legal question is NOT found in the context — say you couldn't find it in the indexed documents, but then provide a helpful general answer based on your knowledge of Indian law, and clearly label it as general knowledge.
+4. Match answer length to question complexity. Simple question = short answer. Detailed question = structured answer with bullet points.
+5. Use the conversation history to answer follow-up questions.
+6. Give ONLY the answer. No suggestions or extra lines at the end.""",
 
     "Hindi": """आप एक जानकार भारतीय कानूनी सहायक हैं।
 प्रश्नों का उत्तर केवल दिए गए भारतीय कानूनी दस्तावेज़ों के आधार पर दें।
@@ -123,7 +126,6 @@ def fetch_suggestions(question, answer, client, language):
         )
         import json
         raw = resp.choices[0].message.content.strip()
-        # Strip markdown fences if present
         raw = raw.replace("```json", "").replace("```", "").strip()
         suggestions = json.loads(raw)
         if isinstance(suggestions, list):
@@ -304,19 +306,20 @@ hr { border-color: rgba(196,160,90,0.15) !important; }
 # ── HERO SECTION ──────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-wrap">
-  <div class="hero-sub"> Law & AI</div>
+  <div class="hero-sub">Major Project · AI & Law</div>
   <div class="hero-title">VidhaanBot</div>
   <div class="hero-desc">
     An AI-powered legal research assistant trained on the Indian Constitution,
-    CPA 2019, Company's Act, Women Safety's act and other foundational legal texts. Ask any question in English or Hindi
+    IPC, CrPC, and other foundational legal texts. Ask any question in English or Hindi
     and get precise, cited answers grounded entirely in the source documents —
     no hallucinations, no opinions, just the law as written.
   </div>
   <div class="badge-row">
     <span class="badge">📜 Indian Constitution</span>
-    <span class="badge">🔍 RAG Architecture</span>
-    <span class="badge">🤖 Llama 3.3 70B</span>
+    <span class="badge">🔍 Consumer Proctection</span>
+    <span class="badge">🙋🏻‍♀️ Women Safety</span>
     <span class="badge">🇮🇳 English + Hindi</span>
+    <span class="badge">🦹🏻 IPC (Indian Penal code)</span>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -363,7 +366,7 @@ with st.sidebar:
     st.markdown("<div style='font-size:0.8rem;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px'>Quick Topics</div>", unsafe_allow_html=True)
     quick_topics = [
         ("📜", "Fundamental Rights"),
-        ("🙋🏻‍♀️", "Women Safety"),
+        ("🛡️", "Article 21A"),
         ("🇮🇳", "Preamble"),
         ("⚖️", "Directive Principles"),
         ("📚", "Right to Education"),
@@ -395,7 +398,7 @@ with st.sidebar:
     st.markdown(f"""
     <div style='font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:12px;line-height:1.9'>
       <div>Model: {LLM_MODEL}</div>
-      <div>Built with LangChain · FAISS · Seq2Seq</div>
+      <div>Built with LangChain · FAISS </div>
       <div style='margin-top:6px;color:rgba(196,160,90,0.4)'>Major Project — 2025-26</div>
     </div>
     """, unsafe_allow_html=True)
@@ -415,10 +418,12 @@ if "suggestions"  not in st.session_state: st.session_state.suggestions  = []
 
 # ── DISPLAY CHAT HISTORY ──────────────────────────────────────────────────────
 for i, msg in enumerate(st.session_state.messages):
+    if i == st.session_state.get("last_streamed", -1):
+        continue  
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
         if msg["role"] == "assistant":
-            # Source toggle — shown from saved data, always visible
+            
             sources = msg.get("sources", [])
             if sources:
                 with st.expander("📎 Sources", expanded=False):
@@ -477,12 +482,12 @@ question = typed_q or pending_q
 if question:
     st.session_state.suggestions = []
     st.session_state.messages.append({"role": "user", "content": question})
+    # Show user message
     with st.chat_message("user"):
         st.markdown(question)
 
     with st.chat_message("assistant"):
         try:
-            
             answer = st.write_stream(
                 stream_answer(question, vectorstore, client,
                               st.session_state.messages, language)
@@ -502,13 +507,16 @@ if question:
                 "content": answer,
                 "sources": sources
             })
+            st.session_state.last_streamed = len(st.session_state.messages) - 1
 
         except Exception as e:
             st.error(f"Error: {e}")
 
-    
+   
     with st.spinner("Getting suggestions..."):
-        suggestions = fetch_suggestions(question, answer, client, language)
+        try:
+            suggestions = fetch_suggestions(question, answer, client, language)
+        except Exception:
+            suggestions = []
         st.session_state.suggestions = suggestions
-
     st.rerun()
