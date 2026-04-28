@@ -106,7 +106,7 @@ def stream_answer(question, vectorstore, client, chat_history, language):
     for chunk in stream:
         token = chunk.choices[0].delta.content
         if token:
-            time.sleep(0.058)
+            time.sleep(0.035)
             yield token
 
 # ── FETCH SUGGESTIONS ─────────────────────────────────────────────────────────
@@ -225,8 +225,8 @@ st.markdown("""
 
 st.markdown("""
 <div class="stat-row">
-  <div class="stat-card"><span class="stat-num">1100+</span><span class="stat-label">Pages Indexed</span></div>
-  <div class="stat-card"><span class="stat-num">3600+</span><span class="stat-label">Knowledge Chunks</span></div>
+  <div class="stat-card"><span class="stat-num">448+</span><span class="stat-label">Pages Indexed</span></div>
+  <div class="stat-card"><span class="stat-num">1800+</span><span class="stat-label">Knowledge Chunks</span></div>
   <div class="stat-card"><span class="stat-num">2</span><span class="stat-label">Languages</span></div>
   <div class="stat-card"><span class="stat-num">70B</span><span class="stat-label">Parameter Model</span></div>
 </div>
@@ -307,12 +307,10 @@ with st.spinner("Loading knowledge base..."):
 # ── SESSION STATE ─────────────────────────────────────────────────────────────
 if "messages"      not in st.session_state: st.session_state.messages      = []
 if "suggestions"   not in st.session_state: st.session_state.suggestions   = []
-if "last_streamed" not in st.session_state: st.session_state.last_streamed = -1
+st.session_state.last_streamed = -1  # reset every run — never skip history
 
 # ── CHAT HISTORY ──────────────────────────────────────────────────────────────
 for i, msg in enumerate(st.session_state.messages):
-    if i == st.session_state.get("last_streamed", -1):
-        continue   # already rendered live, skip to avoid double
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
         if msg["role"] == "assistant":
@@ -377,12 +375,7 @@ if question:
                 stream_answer(question, vectorstore, client,
                               st.session_state.messages, language)
             )
-            # First append — answer only (mirrors app_local.py exactly)
-            st.session_state.messages.append({
-                "role": "assistant", "content": answer
-            })
-
-            # Second append — answer + sources (this is what survives rerun)
+            # Single append with sources
             docs = vectorstore.similarity_search(question, k=TOP_K)
             sources = [
                 {
@@ -397,7 +390,6 @@ if question:
                 "content": answer,
                 "sources": sources
             })
-            st.session_state.last_streamed = len(st.session_state.messages) - 1
 
         except Exception as e:
             st.error(f"Error: {e}")
